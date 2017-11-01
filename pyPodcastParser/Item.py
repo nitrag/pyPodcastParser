@@ -32,6 +32,7 @@ class Item(object):
         itunes_order (str): Override published_date order
         itunes_subtitle (str): The item subtitle
         itunes_summary (str): The summary of the item
+        itunes_keywords (list): List of strings for keywords
         link (str): The URL of item.
         published_date (str): Date item was published
         title (str): The title of item.
@@ -88,6 +89,7 @@ class Item(object):
         item['itunes_order'] = self.itunes_order
         item['itunes_subtitle'] = self.itunes_subtitle
         item['itunes_summary'] = self.itunes_summary
+        item['itunes_keywords'] = self.itunes_keywords
         item['link'] = self.link
         item['published_date'] = self.published_date
         item['title'] = self.title
@@ -198,6 +200,7 @@ class Item(object):
         self.set_itunes_order()
         self.set_itunes_subtitle()
         self.set_itunes_summary()
+        self.set_itunes_keywords()
 
     def set_itunes_author_name(self):
         """Parses author name from itunes tags and sets value"""
@@ -269,3 +272,13 @@ class Item(object):
             self.itunes_summary = self.soup.find('itunes:summary').string
         except AttributeError:
             self.itunes_summary = None
+
+    def set_itunes_keywords(self):
+        """ Parse keywrods from itunes tags and set value"""
+        try:
+            words = self.soup.find('itunes:keywords').string
+            self.itunes_keywords = words.split(",")
+        except AttributeError:
+            self.itunes_keywords = None
+
+
